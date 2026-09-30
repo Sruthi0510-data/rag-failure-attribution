@@ -1,0 +1,32 @@
+{
+  "shots": [
+    {
+      "image": "docs/img/report-summary.png",
+      "source": "docs/report.html",
+      "framed_from": "summary",
+      "framed_to": "taxonomy",
+      "height_px": 276
+    },
+    {
+      "image": "docs/img/report-taxonomy.png",
+      "source": "docs/report.html",
+      "framed_from": "taxonomy",
+      "framed_to": "index",
+      "height_px": 260
+    },
+    {
+      "image": "docs/img/report-index.png",
+      "source": "docs/report.html",
+      "framed_from": "index",
+      "framed_to": null,
+      "height_px": 464
+    }
+  ],
+  "badge": {
+    "colour": "rgb(255, 255, 255)",
+    "background": "rgb(138, 59, 18)",
+    "text": "RECALL@5 MISATTRIBUTES 225 QUESTIONS",
+    "visible": true
+  },
+  "note": "captured from the report the tool generates, framed by heading id, with the verdict badge contrast read back from the rendered page"
+}

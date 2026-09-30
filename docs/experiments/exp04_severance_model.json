@@ -1,0 +1,129 @@
+{
+  "corpus": [
+    {
+      "chunker": "fixed-160",
+      "measured_pct": 98.3,
+      "predicted_pct": 97.2,
+      "residual_pct": 1.1
+    },
+    {
+      "chunker": "fixed-320",
+      "measured_pct": 62.5,
+      "predicted_pct": 65.3,
+      "residual_pct": -2.8
+    },
+    {
+      "chunker": "fixed-320-overlap-80",
+      "measured_pct": 41.7,
+      "predicted_pct": 53.7,
+      "residual_pct": -12.0
+    },
+    {
+      "chunker": "fixed-640",
+      "measured_pct": 30.8,
+      "predicted_pct": 32.6,
+      "residual_pct": -1.8
+    }
+  ],
+  "trials": 4000,
+  "uniform": [
+    {
+      "measured_pct": 92.6,
+      "predicted_pct": 93.1,
+      "residual_pct": -0.5,
+      "size": 160,
+      "span_length": 150,
+      "stride": 160
+    },
+    {
+      "measured_pct": 100.0,
+      "predicted_pct": 100.0,
+      "residual_pct": 0.0,
+      "size": 160,
+      "span_length": 210,
+      "stride": 160
+    },
+    {
+      "measured_pct": 100.0,
+      "predicted_pct": 100.0,
+      "residual_pct": 0.0,
+      "size": 160,
+      "span_length": 300,
+      "stride": 160
+    },
+    {
+      "measured_pct": 27.5,
+      "predicted_pct": 28.7,
+      "residual_pct": -1.2,
+      "size": 320,
+      "span_length": 150,
+      "stride": 240
+    },
+    {
+      "measured_pct": 52.3,
+      "predicted_pct": 53.8,
+      "residual_pct": -1.5,
+      "size": 320,
+      "span_length": 210,
+      "stride": 240
+    },
+    {
+      "measured_pct": 91.2,
+      "predicted_pct": 91.2,
+      "residual_pct": 0.0,
+      "size": 320,
+      "span_length": 300,
+      "stride": 240
+    },
+    {
+      "measured_pct": 46.3,
+      "predicted_pct": 46.6,
+      "residual_pct": -0.3,
+      "size": 320,
+      "span_length": 150,
+      "stride": 320
+    },
+    {
+      "measured_pct": 65.0,
+      "predicted_pct": 65.3,
+      "residual_pct": -0.3,
+      "size": 320,
+      "span_length": 210,
+      "stride": 320
+    },
+    {
+      "measured_pct": 93.1,
+      "predicted_pct": 93.4,
+      "residual_pct": -0.3,
+      "size": 320,
+      "span_length": 300,
+      "stride": 320
+    },
+    {
+      "measured_pct": 24.2,
+      "predicted_pct": 23.3,
+      "residual_pct": 0.9,
+      "size": 640,
+      "span_length": 150,
+      "stride": 640
+    },
+    {
+      "measured_pct": 32.5,
+      "predicted_pct": 32.7,
+      "residual_pct": -0.2,
+      "size": 640,
+      "span_length": 210,
+      "stride": 640
+    },
+    {
+      "measured_pct": 45.7,
+      "predicted_pct": 46.7,
+      "residual_pct": -1.0,
+      "size": 640,
+      "span_length": 300,
+      "stride": 640
+    }
+  ],
+  "worst_corpus_residual_pct": 12.0,
+  "worst_uniform_residual_pct": 1.5
+}

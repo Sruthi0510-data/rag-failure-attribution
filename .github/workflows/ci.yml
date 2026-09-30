@@ -1,0 +1,149 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Installs the dev extra and nothing else. This is the job that would catch a core module
+  # reaching for sentence_transformers, which a machine with the extra installed can never notice.
+  test:
+    name: tests on ${{ matrix.python }} (no optional extras)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install without optional extras
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Confirm the optional extra really is absent
+        run: |
+          python - <<'PY'
+          import importlib.util
+          if importlib.util.find_spec("sentence_transformers") is not None:
+              raise SystemExit("sentence_transformers is installed; this job must run without it")
+          print("sentence_transformers is absent, as this job requires")
+          PY
+
+      - name: Lint
+        run: python -m ruff check .
+
+      - name: Tests
+        run: |
+          python -m pytest -q -p no:cacheprovider --cov=rfa --cov-report=json:coverage.json \
+            --junitxml=junit.xml
+
+      - name: Coverage floor
+        run: |
+          python - <<'PY'
+          import json
+          totals = json.load(open("coverage.json"))["totals"]
+          pct = totals["percent_covered"]
+          print(f"line coverage {pct:.1f}%")
+          if pct < 95:
+              raise SystemExit(f"coverage {pct:.1f}% is below the floor of 95%")
+          PY
+
+  # Re-measures every published figure and fails when a document has drifted from the code.
+  # Tests run as their own step above and here, never inside the collector, so a red test
+  # surfaces as a failed pytest step rather than as a CalledProcessError from a metrics script.
+  receipts:
+    name: receipts and rendering
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install with every extra
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+          python -m pip install cmarkgfm playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Tests, with machine readable reports
+        run: |
+          python -m pytest -q -p no:cacheprovider --cov=rfa --cov-report=json:coverage.json \
+            --junitxml=junit.xml
+
+      - name: Re-measure every published figure
+        run: python tools/collect_metrics.py --skip-tests
+
+      - name: Check the documents against the measurements
+        run: python tools/check_numbers.py
+
+      - name: Regenerate the README data tables and fail if they drifted
+        run: |
+          python tools/render_tables.py
+          if ! git diff --quiet -- README.md; then
+            echo "the committed README tables differ from a fresh render:"
+            git --no-pager diff -- README.md
+            exit 1
+          fi
+
+      - name: Re-render the diagrams and fail if they drifted
+        run: |
+          python tools/render_diagrams.py
+          if ! git diff --quiet -- docs/diagrams; then
+            echo "committed diagrams differ from a fresh render:"
+            git --no-pager diff --stat -- docs/diagrams
+            exit 1
+          fi
+
+      - name: Rebuild the report and recapture the evidence
+        run: |
+          python -m rfa.cli report --out docs/report.html || true
+          python tools/capture_screenshots.py
+
+      - name: Assert the README images load in a browser
+        run: python tools/verify_rendering.py
+
+      - name: Regenerate the fixture and fail if it is not byte identical
+        run: |
+          python -m rfa.cli generate --out fixtures/policy_corpus.json --seed 20260930
+          if ! git diff --quiet -- fixtures; then
+            echo "the seeded generator is no longer deterministic"
+            git --no-pager diff --stat -- fixtures
+            exit 1
+          fi
+
+      - name: Publish the awkward table to the job summary
+        run: |
+          {
+            echo "## What raising k cannot do"
+            echo
+            PYTHONPATH=experiments python experiments/exp02_k_sweep.py
+            echo
+            PYTHONPATH=experiments python experiments/exp04_severance_model.py
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload experiment output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: experiments
+          path: |
+            docs/experiments/*.json
+            docs/metrics.json
+            docs/img/*.png
+            docs/img/manifest.json
+            junit.xml
+            coverage.json

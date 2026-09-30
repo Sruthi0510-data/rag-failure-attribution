@@ -1,0 +1,83 @@
+{
+  "best_strict": "paragraph",
+  "chunkers": {
+    "fixed-160": {
+      "answerable_pct": 1.7,
+      "chunks": 1489,
+      "embedding_misses": 0,
+      "false_hits": 265,
+      "index_multiple": 1.0,
+      "rank_misses": 0,
+      "recall_generous_pct": 75.3,
+      "recall_strict_pct": 1.7,
+      "severed": 89
+    },
+    "fixed-320": {
+      "answerable_pct": 37.5,
+      "chunks": 769,
+      "embedding_misses": 0,
+      "false_hits": 195,
+      "index_multiple": 1.0,
+      "rank_misses": 7,
+      "recall_generous_pct": 89.7,
+      "recall_strict_pct": 35.6,
+      "severed": 30
+    },
+    "fixed-320-overlap-80": {
+      "answerable_pct": 58.3,
+      "chunks": 967,
+      "embedding_misses": 0,
+      "false_hits": 129,
+      "index_multiple": 1.3,
+      "rank_misses": 30,
+      "recall_generous_pct": 85.8,
+      "recall_strict_pct": 50.0,
+      "severed": 21
+    },
+    "fixed-640": {
+      "answerable_pct": 69.2,
+      "chunks": 409,
+      "embedding_misses": 0,
+      "false_hits": 92,
+      "index_multiple": 1.0,
+      "rank_misses": 14,
+      "recall_generous_pct": 90.8,
+      "recall_strict_pct": 65.3,
+      "severed": 19
+    },
+    "paragraph": {
+      "answerable_pct": 100.0,
+      "chunks": 600,
+      "embedding_misses": 0,
+      "false_hits": 0,
+      "index_multiple": 1.0,
+      "rank_misses": 22,
+      "recall_generous_pct": 93.9,
+      "recall_strict_pct": 93.9,
+      "severed": 0
+    },
+    "sentence-3": {
+      "answerable_pct": 83.3,
+      "chunks": 840,
+      "embedding_misses": 0,
+      "false_hits": 58,
+      "index_multiple": 1.0,
+      "rank_misses": 22,
+      "recall_generous_pct": 93.3,
+      "recall_strict_pct": 77.2,
+      "severed": 2
+    },
+    "sentence-3-overlap-1": {
+      "answerable_pct": 100.0,
+      "chunks": 1200,
+      "embedding_misses": 4,
+      "false_hits": 0,
+      "index_multiple": 1.44,
+      "rank_misses": 53,
+      "recall_generous_pct": 84.2,
+      "recall_strict_pct": 84.2,
+      "severed": 0
+    }
+  },
+  "k": 5
+}

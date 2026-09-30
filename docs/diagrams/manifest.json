@@ -1,0 +1,16 @@
+{
+  "diagrams": [
+    "severance.svg",
+    "metric-gap.svg"
+  ],
+  "source": "tools/render_diagrams.py",
+  "palette": {
+    "categorical": [
+      "#eb6834",
+      "#2a78d6",
+      "#1baf7a"
+    ],
+    "surface": "#fcfcfb"
+  },
+  "note": "figures are read from docs/metrics.json and the k sweep JSON, so a diagram cannot drift from the prose"
+}

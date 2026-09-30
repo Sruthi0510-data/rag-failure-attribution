@@ -1,0 +1,42 @@
+{
+  "chunker": "fixed-320",
+  "chunking_fixable": 225,
+  "counts": {
+    "absent": 0,
+    "embedding_miss": 0,
+    "false_hit": 195,
+    "hit": 128,
+    "rank_miss": 7,
+    "severed": 30
+  },
+  "k": 5,
+  "retrieval_fixable": 7,
+  "summary": {
+    "answerable": 135,
+    "answerable_pct": 37.5,
+    "breakdown": {
+      "false_hit": 195,
+      "hit": 128,
+      "rank_miss": 7,
+      "severed": 30
+    },
+    "chunker": "fixed-320",
+    "chunking_fixable": 225,
+    "chunks": 769,
+    "false_hit_share_of_scored_hits_pct": 60.4,
+    "false_hits": 195,
+    "index_multiple": 1.0,
+    "k": 5,
+    "mean_answer_length": 209.9,
+    "misses": 37,
+    "pool": 20,
+    "questions": 360,
+    "recall_generous": 323,
+    "recall_generous_pct": 89.7,
+    "recall_strict": 128,
+    "recall_strict_pct": 35.6,
+    "retrieval_fixable": 7,
+    "severed_misses": 30,
+    "severed_share_of_misses_pct": 81.1
+  }
+}
