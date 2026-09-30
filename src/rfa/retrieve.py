@@ -39,7 +39,19 @@ class Ranking:
 
 
 class Index:
-    """A fitted embedder plus the encoded chunks. Built once and queried many times."""
+    """A fitted embedder, the encoded chunks, and a posting list per term.
+
+    The obvious implementation scores the query against every chunk. It is correct and it is
+    quadratic in the shape this repository actually runs: several hundred questions against
+    several hundred chunks, repeated once per chunker and once per point on a k sweep. The
+    inverted index touches only the chunks that share a term with the query, which for a
+    lexical retriever is a small fraction of the index.
+
+    The optimisation is only worth having if it changes nothing else, so a test ranks the same
+    queries both ways and asserts the orderings are identical, including the tie ordering.
+    Chunks sharing no term with the query score zero and are appended in chunk id order, which
+    is what the exhaustive version produced for them too.
+    """
 
     def __init__(self, chunks: Sequence[Chunk], embedder: TfidfEmbedder | None = None) -> None:
         if not chunks:
@@ -49,17 +61,50 @@ class Index:
         if not self.embedder.fitted:
             self.embedder.fit([chunk.text for chunk in self.chunks])
         self.vectors = {chunk.chunk_id: self.embedder.encode(chunk.text) for chunk in self.chunks}
+        self.postings: dict[str, list[tuple[str, float]]] = {}
+        for chunk in self.chunks:
+            for term, weight in self.vectors[chunk.chunk_id].items():
+                self.postings.setdefault(term, []).append((chunk.chunk_id, weight))
+        self._chunk_ids = tuple(sorted(chunk.chunk_id for chunk in self.chunks))
 
     def __len__(self) -> int:
         return len(self.chunks)
 
     def rank(self, question_id: str, query: str, limit: int | None = None) -> Ranking:
-        """Rank every chunk, or the top `limit`, most similar first."""
+        """Rank the chunks, most similar first, breaking ties by chunk id."""
         vector = self.embedder.encode(query)
-        scored = [
-            (cosine(vector, self.vectors[chunk.chunk_id]), chunk.chunk_id) for chunk in self.chunks
-        ]
-        scored.sort(key=lambda pair: (-pair[0], pair[1]))
+        accumulator: dict[str, float] = {}
+        for term, weight in vector.items():
+            for chunk_id, chunk_weight in self.postings.get(term, ()):
+                accumulator[chunk_id] = accumulator.get(chunk_id, 0.0) + weight * chunk_weight
+
+        scored = sorted(
+            ((score, chunk_id) for chunk_id, score in accumulator.items() if score > 0.0),
+            key=lambda pair: (-pair[0], pair[1]),
+        )
+        if limit is None or len(scored) < limit:
+            matched = {chunk_id for _, chunk_id in scored}
+            scored.extend(
+                (0.0, chunk_id) for chunk_id in self._chunk_ids if chunk_id not in matched
+            )
+        if limit is not None:
+            scored = scored[:limit]
+        return Ranking(
+            question_id=question_id,
+            ranked_ids=tuple(chunk_id for _, chunk_id in scored),
+            scores=tuple(score for score, _ in scored),
+        )
+
+    def rank_exhaustively(self, question_id: str, query: str, limit: int | None = None) -> Ranking:
+        """The unoptimised ranking, kept so a test can hold the fast path to it."""
+        vector = self.embedder.encode(query)
+        scored = sorted(
+            (
+                (cosine(vector, self.vectors[chunk.chunk_id]), chunk.chunk_id)
+                for chunk in self.chunks
+            ),
+            key=lambda pair: (-pair[0], pair[1]),
+        )
         if limit is not None:
             scored = scored[:limit]
         return Ranking(
