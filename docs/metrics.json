@@ -121,7 +121,7 @@
     "severed_misses": 30,
     "severed_share_pct": 81.1,
     "smallest_chunker_answerable_pct": 1.7,
-    "tests_total": 254,
+    "tests_total": 260,
     "worst_corpus_residual_pct": 12.0,
     "worst_uniform_residual_pct": 1.5
   },

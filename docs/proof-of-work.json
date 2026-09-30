@@ -1,0 +1,89 @@
+{
+  "note": "every command below was executed by tools/capture_terminal.py; exit codes are as returned, and elapsed times and absolute paths are normalised so the committed transcript does not change on every run",
+  "captures": [
+    {
+      "label": "the suite, with branch coverage",
+      "command": "python3 -m pytest -q -p no:cacheprovider --cov=rfa --cov-branch --cov-report=term-missing --cov-fail-under=100",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output_sha256": "b00ba7799b4c65a99f6389d043f3adf2864a558e060caea85fd767b918c3c887",
+      "output_lines": 23,
+      "output": "............................................................................................ [ 35%]\n............................................................................................ [ 70%]\n............................................................................                 [100%]\n========================================== tests coverage ==========================================\n_________________________ coverage: platform linux, python 3.11.15-final-0 _________________________\n\nName                    Stmts   Miss Branch BrPart  Cover   Missing\n-------------------------------------------------------------------\nsrc/rfa/__init__.py         4      0      0      0   100%\nsrc/rfa/chunking.py       113      0     42      0   100%\nsrc/rfa/cli.py            125      0     20      0   100%\nsrc/rfa/corpus.py          92      0     24      0   100%\nsrc/rfa/embed.py           43      0     18      0   100%\nsrc/rfa/errors.py           4      0      0      0   100%\nsrc/rfa/evaluate.py       102      0     20      0   100%\nsrc/rfa/exit_codes.py       9      0      0      0   100%\nsrc/rfa/failures.py        45      0      0      0   100%\nsrc/rfa/generator.py       82      0     30      0   100%\nsrc/rfa/report.py          35      0      6      0   100%\nsrc/rfa/retrieve.py        59      0     22      0   100%\n-------------------------------------------------------------------\nTOTAL                     713      0    182      0   100%\nRequired test coverage of 100% reached. Total coverage: 100.00%",
+      "max_lines": 16,
+      "tail_lines": 4,
+      "seconds": 52.34
+    },
+    {
+      "label": "classify every question under the shipped chunker: a finding",
+      "command": "python3 -m rfa.cli evaluate",
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "output_sha256": "4be7de6e51aa4eda47a1b8aecb0729bc541f087bc1ed33bfc685bfa78f54c2b2",
+      "output_lines": 28,
+      "output": "{\n  \"chunker\": \"fixed-320\",\n  \"k\": 5,\n  \"pool\": 20,\n  \"questions\": 360,\n  \"chunks\": 769,\n  \"index_multiple\": 1.0,\n  \"mean_answer_length\": 209.9,\n  \"answerable\": 135,\n  \"answerable_pct\": 37.5,\n  \"recall_generous\": 323,\n  \"recall_generous_pct\": 89.7,\n  \"recall_strict\": 128,\n  \"recall_strict_pct\": 35.6,\n  \"false_hits\": 195,\n  \"false_hit_share_of_scored_hits_pct\": 60.4,\n  \"misses\": 37,\n  \"severed_misses\": 30,\n  \"severed_share_of_misses_pct\": 81.1,\n  \"retrieval_fixable\": 7,\n  \"chunking_fixable\": 225,\n  \"breakdown\": {\n    \"hit\": 128,\n    \"false_hit\": 195,\n    \"severed\": 30,\n    \"rank_miss\": 7\n  }\n}",
+      "max_lines": 16,
+      "tail_lines": 5,
+      "seconds": 0.24
+    },
+    {
+      "label": "one question the metric calls a hit and the answer cannot be read from",
+      "command": "python3 -m rfa.cli explain q-0007",
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "output_sha256": "ad1326f34b4131c772fae82a42bdbf578d4db6692ed18113d8368d0e1cd2b020",
+      "output_lines": 8,
+      "output": "q-0007: false_hit\n  answer length          243 characters\n  chunks overlapping it  2\n  chunks containing it   0\n  best overlapping rank  2\n  best containing rank   None\n  scored a hit at k=5?  True\n  actually answerable?   False",
+      "max_lines": 10,
+      "tail_lines": 0,
+      "seconds": 0.24
+    },
+    {
+      "label": "every chunker side by side",
+      "command": "python3 -m rfa.cli compare",
+      "exit_code": 3,
+      "expected_exit_code": 3,
+      "output_sha256": "d7e5b323b4029525008a42222bf0e327312a51cda1d21facff32e6850de5ac2e",
+      "output_lines": 9,
+      "output": "chunker                 chunks  answerable  recall@k   strict  false hits  severed\n----------------------------------------------------------------------------------\nfixed-160                 1489        1.7%     75.3%     1.7%         265       89\nfixed-320                  769       37.5%     89.7%    35.6%         195       30\nfixed-320-overlap-80       967       58.3%     85.8%    50.0%         129       21\nfixed-640                  409       69.2%     90.8%    65.3%          92       19\nparagraph                  600      100.0%     93.9%    93.9%           0        0\nsentence-3                 840       83.3%     93.3%    77.2%          58        2\nsentence-3-overlap-1      1200      100.0%     84.2%    84.2%           0        0",
+      "max_lines": 13,
+      "tail_lines": 0,
+      "seconds": 1.64
+    },
+    {
+      "label": "an evaluation set smaller than the caller required: a refusal",
+      "command": "python3 -m rfa.cli evaluate --require-questions 99999",
+      "exit_code": 4,
+      "expected_exit_code": 4,
+      "output_sha256": "b51da347462471c5be00a262055be198953e64e25d3ad8d6d711db17de0bd024",
+      "output_lines": 29,
+      "output": "{\n  \"chunker\": \"fixed-320\",\n  \"k\": 5,\n  \"pool\": 20,\n  \"questions\": 360,\n  \"chunks\": 769,\n  \"index_multiple\": 1.0,\n  \"mean_answer_length\": 209.9,\n  \"answerable\": 135,\n  \"answerable_pct\": 37.5,\n  \"recall_generous\": 323,\n  \"recall_generous_pct\": 89.7,\n  \"recall_strict\": 128,\n  \"recall_strict_pct\": 35.6,\n  \"false_hits\": 195,\n  \"false_hit_share_of_scored_hits_pct\": 60.4,\n  \"misses\": 37,\n  \"severed_misses\": 30,\n  \"severed_share_of_misses_pct\": 81.1,\n  \"retrieval_fixable\": 7,\n  \"chunking_fixable\": 225,\n  \"breakdown\": {\n    \"hit\": 128,\n    \"false_hit\": 195,\n    \"severed\": 30,\n    \"rank_miss\": 7\n  }\n}\nthe evaluation set holds 360 questions, below the 99999 required",
+      "max_lines": 5,
+      "tail_lines": 2,
+      "seconds": 0.29
+    },
+    {
+      "label": "a chunker that is not one of the seven",
+      "command": "python3 -m rfa.cli evaluate --chunker sentence",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "output_sha256": "16fce8a72ef284858cf4f1d9b90c71062bd894b3837eab00949b38cbc4f16390",
+      "output_lines": 4,
+      "output": "usage: rfa evaluate [-h] [--corpus CORPUS]\n                    [--chunker {fixed-160,fixed-320,fixed-320-overlap-80,fixed-640,paragraph,sentence-3,sentence-3-overlap-1}]\n                    [-k K] [--pool POOL] [--json JSON] [--require-questions REQUIRE_QUESTIONS]\nrfa evaluate: error: argument --chunker: invalid choice: 'sentence' (choose from 'fixed-160', 'fixed-320', 'fixed-320-overlap-80', 'fixed-640', 'paragraph', 'sentence-3', 'sentence-3-overlap-1')",
+      "max_lines": 4,
+      "tail_lines": 0,
+      "seconds": 0.06
+    },
+    {
+      "label": "every published figure re-checked against the prose",
+      "command": "python3 tools/check_numbers.py",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "output_sha256": "7545f8bc2e785f14761d474910194d86d5fb449f2f171468e64c101e94dc8a3b",
+      "output_lines": 1,
+      "output": "number check passed: 27 metrics verified against 7 documents, forwards, per document and backwards",
+      "max_lines": 3,
+      "tail_lines": 0,
+      "seconds": 0.09
+    }
+  ]
+}
