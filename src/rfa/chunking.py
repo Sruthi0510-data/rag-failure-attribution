@@ -149,7 +149,11 @@ def sentence_window(sentences: int, overlap: int = 0) -> Chunker:
             step = sentences - overlap
             index = 0
             position = 0
-            while position < len(boundaries):
+            # `while True` rather than a bounded condition, because the condition would be
+            # unreachable: the loop breaks as soon as a window reaches the last sentence, so
+            # `position` can never walk past the end. Branch coverage found the dead edge, and
+            # a guard nothing can fail is worse than no guard, since it reads as protection.
+            while True:
                 window = boundaries[position : position + sentences]
                 start, end = window[0][0], window[-1][1]
                 chunks.append(
