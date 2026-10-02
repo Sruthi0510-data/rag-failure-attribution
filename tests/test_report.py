@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 
 import pytest
 
@@ -116,12 +118,6 @@ def test_chunker_names_are_escaped_rather_than_interpolated_raw(shipped_corpus):
     assert "<script>x</script>" not in html
     assert "&lt;script&gt;" in html
 
-
-# The proof-of-work transcript. These assertions are about a committed artefact
-# rather than about a function, so they need only the standard library and the
-# repository root.
-import json
-from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 

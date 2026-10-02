@@ -44,7 +44,7 @@ source = ["rfa"]
 exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 target-version = "py311"
 src = ["src", "tests", "tools", "experiments"]
 
@@ -57,4 +57,9 @@ known-first-party = ["rfa", "tests"]
 known-local-folder = ["_common"]
 
 [tool.ruff.lint.per-file-ignores]
+# argparse hands every handler the same namespace, so a handler that does
+# not read it still has to accept it.
+"src/*/cli.py" = ["ARG001"]
+"tools/*" = ["E402"]
+"experiments/*" = ["E402"]
 "tests/*" = ["ARG001", "ARG002"]
