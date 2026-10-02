@@ -96,6 +96,7 @@
     "docs/adr/ADR-004-exit-codes-separate-a-finding-from-a-failure.md",
     "docs/adr/ADR-005-what-this-repository-cannot-measure.md"
   ],
+  "measured_despite_a_red_suite": false,
   "metrics": {
     "answerable_pct": 37.5,
     "answers_recovered_by_overlap": 75,
@@ -121,7 +122,7 @@
     "severed_misses": 30,
     "severed_share_pct": 81.1,
     "smallest_chunker_answerable_pct": 1.7,
-    "tests_total": 260,
+    "tests_total": 276,
     "worst_corpus_residual_pct": 12.0,
     "worst_uniform_residual_pct": 1.5
   },

@@ -27,7 +27,7 @@ On the committed corpus of 120 policy documents and 360 annotated questions, chu
 - Of the **37 recorded misses**, **30 of those misses** are severance rather than retrieval, which is **81.1% of the misses**. There are **7 questions a retriever** change could address, against **225 need a chunking** change.
 - Raising k does not help. At **k of 50 the metric** reports a perfect score, with the ceiling exactly where it started.
 
-260 tests, 100.0% line and 100.0% branch coverage, and every figure on this page is re-measured by CI and matched against the wording around it by `tools/check_numbers.py`.
+276 tests, 100.0% line and 100.0% branch coverage, and every figure on this page is re-measured by CI and matched against the wording around it by `tools/check_numbers.py`.
 
 ## Quickstart
 
@@ -203,7 +203,7 @@ full untruncated output with a SHA-256 of each command's bytes is in
 | Python, standard library only | corpus, chunkers, retriever, taxonomy | the core is offsets and set membership; a dependency would have to earn its place and none did |
 | TF-IDF over an inverted index | the default retriever | real retrieval with real weaknesses, fully deterministic, and no model download between a reviewer and the headline number |
 | sentence-transformers, optional extra | the dense path | offered because the question always comes up, and ADR-002 says exactly which numbers it can move |
-| pytest with branch coverage | 260 tests, at 100.0% line and 100.0% branch | branch coverage is what matters in a module of boundary conditionals, and it found a dead loop guard |
+| pytest with branch coverage | 276 tests, at 100.0% line and 100.0% branch | branch coverage is what matters in a module of boundary conditionals, and it found a dead loop guard |
 | ruff | lint and import order | one tool over source, tests, tooling and experiments, so the experiments cannot drift into scratch code |
 | Playwright with Chromium | asserting the committed SVGs load, reading badge contrast back | only a browser can see a `naturalWidth` of zero or a badge rendered in its own background colour |
 | hand-emitted SVG | the diagram and the chart | avoids four Mermaid failure modes that all land on a README embed. See ADR-005 |
