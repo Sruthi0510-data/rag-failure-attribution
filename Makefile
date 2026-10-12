@@ -81,4 +81,3 @@ clean:
 
 corpus:
 	$(PY) -m rfa.cli generate
-

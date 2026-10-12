@@ -80,6 +80,6 @@
 <text x="18" y="1438" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#d8dee6" xml:space="preserve">  d-320-overlap-80', 'fixed-640', 'paragraph', 'sentence-3', 'sentence-3-overlap-1')</text>
 <text x="18" y="1456" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="600" fill="#4cc38a" xml:space="preserve">[exit 2]</text>
 <text x="18" y="1492" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="600" fill="#5aa9f5" xml:space="preserve">$ python3 tools/check_numbers.py</text>
-<text x="18" y="1510" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#d8dee6" xml:space="preserve">number check passed: 27 metrics verified against 7 documents, forwards, per document and backwards</text>
+<text x="18" y="1510" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="400" fill="#d8dee6" xml:space="preserve">number check passed: 27 metrics verified against 6 documents, forwards, per document and backwards</text>
 <text x="18" y="1528" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12.5" font-weight="600" fill="#4cc38a" xml:space="preserve">[exit 0]</text>
 </svg>
